@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="smartlogs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="entry" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="device" minOccurs="1">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="device_id">
+		      <xs:simpleType>
+			<xs:restriction base="xs:string">
+			  <xs:pattern value="[A-Z]{3}[0-9]{4}"/>
+			</xs:restriction>
+		      </xs:simpleType>
+		    </xs:element>
+                    <xs:element name="location" minOccurs="0">
+		      <xs:simpleType>
+			<xs:restriction base="xs:string">
+			  <xs:maxLength value="30"/>
+			</xs:restriction>
+		      </xs:simpleType>
+		    </xs:element>
+                    <xs:element name="firmware_ver" minOccurs="0">
+		      <xs:simpleType>
+			<xs:union>
+			  <xs:simpleType>
+		            <xs:restriction base="xs:string">
+			      <xs:pattern value="v[0-9]+\.[0-9]+\.[0-9]+"/>
+			    </xs:restriction>
+			  </xs:simpleType>
+			  <xs:simpleType>
+			    <xs:restriction base="xs:string">
+			      <xs:enumeration value=""/>
+			    </xs:restriction>
+			  </xs:simpleType>
+			</xs:union>
+		      </xs:simpleType>
+		    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="metrics">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="temperature">
+		      <xs:simpleType>
+			<xs:restriction base="xs:decimal">
+			  <xs:minInclusive value="-30.0"/>
+			  <xs:maxInclusive value="60.0"/>
+			</xs:restriction>
+		      </xs:simpleType>
+		    </xs:element>
+                    <xs:element name="humidity">
+		      <xs:simpleType>
+			<xs:restriction base="xs:integer">
+			  <xs:minInclusive value="0"/>
+			  <xs:maxInclusive value="100"/>
+		        </xs:restriction>
+		      </xs:simpleType>
+		    </xs:element>
+                    <xs:element name="battery" minOccurs="1">
+		      <xs:simpleType>
+			<xs:restriction base="xs:integer">
+			  <xs:minInclusive value="0"/>
+			  <xs:maxInclusive value="100"/>
+			</xs:restriction>
+		      </xs:simpleType>
+		    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="status" use="optional">
+		    <xs:simpleType>
+		      <xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+		        <xs:enumeration value="🟢"/>
+		        <xs:enumeration value="🔴"/>
+		        <xs:enumeration value="&#x26A0;&#xFE0F;"/>
+		      </xs:restriction>
+		    </xs:simpleType>
+		  </xs:attribute>
+                  <xs:attribute name="alert_level" use="optional">
+		    <xs:simpleType>
+		      <xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+			<xs:enumeration value="LOW"/>
+			<xs:enumeration value="MEDIUM"/>
+			<xs:enumeration value="HIGH"/>
+			<xs:enumeration value="CRITICAL"/>
+		      </xs:restriction>
+		    </xs:simpleType>
+		  </xs:attribute>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="timestamp" type="xs:dateTime"/>
+              <xs:element name="event_code">
+                <xs:complexType mixed="true">
+                  <xs:attribute name="hexBig" type="xs:string"/>
+                  <xs:attribute name="hexLittle" type="xs:string"/>
+                  <xs:attribute name="decimal">
+		    <xs:simpleType>
+		      <xs:restriction base="xs:integer">
+			<xs:minInclusive value="0"/>
+			<xs:maxInclusive value="255"/>
+		      </xs:restriction>	
+		    </xs:simpleType>
+		  </xs:attribute>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:integer" use="required"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
